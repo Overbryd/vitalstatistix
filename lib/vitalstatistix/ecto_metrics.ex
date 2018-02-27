@@ -11,8 +11,8 @@ defmodule Vitalstatistix.EctoMetrics do
   alias Vitalstatistix.Statsd
 
   def log(entry) do
-    queue_time = (entry.queue_time || 0) / 1000
-    exec_time = entry.query_time / 1000 + queue_time
+    queue_time = (entry.queue_time || 0) / 1_000_000
+    exec_time = entry.query_time / 1_000_000 + queue_time
     Statsd.timing("ecto.query_exec.time", exec_time)
     Statsd.timing("ecto.query_queue.time", queue_time)
     {result, _} = entry.result
