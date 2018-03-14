@@ -10,9 +10,9 @@ defmodule Vitalstatistix.Plug do
 
   require Logger
 
-  def init([]), do: []
+  def init(opts), do: opts
 
-  def call(conn, _config) do
+  def call(conn, opts) do
     started_at = System.monotonic_time(:microseconds)
     Statsd.increment("plug.request.#{String.downcase(conn.method)}", 1)
     register_before_send(conn, fn conn ->
@@ -20,9 +20,20 @@ defmodule Vitalstatistix.Plug do
       duration = (ended_at - started_at) / 1000
       Statsd.increment("plug.response.#{conn.status}", 1)
       Statsd.timing("plug.request_response.time", duration)
-      Logger.info "\"#{conn.method} #{conn.request_path}\" #{conn.status}", [time_ms: duration]
+      log(conn, duration, opts)
       conn
     end)
+  end
+
+  def log(conn, duration, opts) do
+    log_condition = case Keyword.get(opts, :log_if) do
+      {mod, function} -> apply(mod, function, [conn])
+      fun when is_function(fun) -> fun.(conn)
+      _ -> true
+    end
+    if log_condition do
+      Logger.info "\"#{conn.method} #{conn.request_path}\" #{conn.status}", [time_ms: duration]
+    end
   end
 
 end
