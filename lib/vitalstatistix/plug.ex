@@ -13,10 +13,10 @@ defmodule Vitalstatistix.Plug do
   def init(opts), do: opts
 
   def call(conn, opts) do
-    started_at = System.monotonic_time(:microseconds)
+    started_at = System.monotonic_time(:microsecond)
     Statsd.increment("plug.request.#{String.downcase(conn.method)}", 1)
     register_before_send(conn, fn conn ->
-      ended_at = System.monotonic_time(:microseconds)
+      ended_at = System.monotonic_time(:microsecond)
       duration = (ended_at - started_at) / 1000
       Statsd.increment("plug.response.#{conn.status}", 1)
       Statsd.timing("plug.request_response.time", duration)
