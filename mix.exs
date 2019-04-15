@@ -5,7 +5,7 @@ defmodule Vitalstatistix.MixProject do
     [
       app: :vitalstatistix,
       version: "0.1.0",
-      elixir: "~> 1.6",
+      elixir: "~> 1.7.4",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "An application statistic library for statsd/datadog",
