@@ -11,21 +11,23 @@ on:
 jobs:
   integration_test:
     runs-on: ubuntu-latest
-    name: OTP ${{matrix.pair.otp-version}} / Elixir ${{matrix.pair.elixir-version}}
+    name: OTP ${{matrix.pair.otp}} / Elixir ${{matrix.pair.elixir}}
     strategy:
       matrix:
         pair:
-          - otp-version: '22.2'
-            elixir-version: '1.7.4'
-          - otp-version: '22.2'
-            elixir-version: '1.8.2'
-          - otp-version: '21.x'
-            elixir-version: '1.9.4'
+          - otp: '22.2'
+            elixir: '1.7.4'
+          - otp: '22.2'
+            elixir: '1.8.2'
+          - otp: '21.x'
+            elixir: '1.9.4'
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
+      - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.pair.otp-version}}
-          elixir-version: ${{matrix.pair.elixir-version}}
-      - run: mix deps.get
-      - run: mix test
+          otp-version: ${{matrix.pair.otp}}
+          elixir-version: ${{matrix.pair.elixir}}
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Run tests
+        run: mix test
