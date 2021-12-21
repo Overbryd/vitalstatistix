@@ -26,9 +26,9 @@ defmodule Vitalstatistix.MixProject do
   defp deps do
     [
       # statix is the underlying statsd socket
-      {:statix, "~> 1.2.1"},
+      {:statix, "~> 1.4"},
       # plug is required because we provide per request statistics
-      {:plug, "~> 1.8"}
+      {:plug, "~> 1.12"}
     ]
   end
 end

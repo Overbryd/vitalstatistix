@@ -9,7 +9,7 @@ defmodule Vitalstatistix.PlugTest do
   end
 
   test "hooks itself on before_send" do
-    assert %Plug.Conn{before_send: [_fun]} = conn(:get, "/") |> Vitalstatistix.Plug.call([])
+    assert %Plug.Conn{private: %{before_send: [_fun]}} = conn(:get, "/") |> Vitalstatistix.Plug.call([])
   end
 
   test "before_send executes with logging disabled" do
@@ -34,7 +34,7 @@ defmodule Vitalstatistix.PlugTest do
     |> exec_before_send
   end
 
-  def exec_before_send(%Plug.Conn{before_send: before_send} = conn), do: exec_before_send(conn, before_send)
+  def exec_before_send(%Plug.Conn{private: %{before_send: before_send}} = conn), do: exec_before_send(conn, before_send)
 
   def exec_before_send(_conn, []), do: nil
 
