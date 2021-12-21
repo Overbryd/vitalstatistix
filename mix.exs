@@ -4,7 +4,7 @@ defmodule Vitalstatistix.MixProject do
   def project do
     [
       app: :vitalstatistix,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -27,9 +27,9 @@ defmodule Vitalstatistix.MixProject do
   defp deps do
     [
       # statix is the underlying statsd socket
-      {:statix, "~> 1.1.0"},
+      {:statix, "~> 1.2.1"},
       # plug is required because we provide per request statistics
-      {:plug, "~> 1.5"}
+      {:plug, "~> 1.8"}
     ]
   end
 end
